@@ -7,6 +7,7 @@
  */
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbw8vQmu9WNHxMegWBMaUCscS0DD_0s-UgxUdRQJr8SCuKE2GReCwuqF3NbD3GcJ_VkP/exec";
 const STORAGE_KEY = "sakon2TableTennisMembers";
+const CONTENT_STORAGE_KEY = "sakon2TableTennisContent";
 const SESSION_KEY = "sakon2TableTennisAdminToken";
 
 const demoMembers = [
@@ -19,6 +20,8 @@ const demoMembers = [
 ];
 
 let allMembers = [];
+let activityImages = [];
+let questionItems = [];
 let adminToken = sessionStorage.getItem(SESSION_KEY) || "";
 let editingIsNew = false;
 
@@ -33,8 +36,9 @@ async function init() {
   setupReveal();
   setupForms();
   setupMemberFilters();
+  setupContentFeatures();
   setupAdmin();
-  await loadMembers();
+  await Promise.all([loadMembers(), loadPublicContent()]);
 }
 
 function setupNavigation() {
@@ -86,6 +90,116 @@ async function loadMembers() {
   }
   renderPublicMembers();
   updatePublicCount();
+}
+
+function setupContentFeatures() {
+  $("#questionForm").addEventListener("submit", submitQuestion);
+  $("#questionSearch").addEventListener("input", renderPublicQuestions);
+}
+
+async function loadPublicContent() {
+  $("#activityGallery").innerHTML = '<div class="loading-card">กำลังโหลดภาพกิจกรรม...</div>';
+  $("#publicQuestionList").innerHTML = '<div class="loading-card">กำลังโหลดคำถาม...</div>';
+  try {
+    if (GAS_API_URL) {
+      const result = await apiRequest("getPublicContent");
+      if (!result.success) throw new Error(result.message || "โหลดข้อมูลกิจกรรมไม่สำเร็จ");
+      activityImages = Array.isArray(result.activities) ? result.activities : [];
+      questionItems = Array.isArray(result.questions) ? result.questions : [];
+    } else {
+      const saved = JSON.parse(localStorage.getItem(CONTENT_STORAGE_KEY) || "{}");
+      activityImages = saved.activities || [];
+      questionItems = saved.questions || [];
+    }
+  } catch (error) {
+    console.error(error);
+    activityImages = [];
+    questionItems = [];
+    showToast("ยังไม่สามารถโหลดภาพกิจกรรมและคำถามได้");
+  }
+  renderActivityGallery();
+  renderPublicQuestions();
+}
+
+function saveLocalContent() {
+  localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify({
+    activities: activityImages,
+    questions: questionItems
+  }));
+}
+
+function renderActivityGallery() {
+  const published = activityImages
+    .filter(item => item.status !== "ซ่อน")
+    .sort((a, b) => String(b.activityDate || b.createdAt).localeCompare(String(a.activityDate || a.createdAt)));
+  $("#activityGallery").innerHTML = published.map(item => `
+    <article class="gallery-card reveal visible">
+      <img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy">
+      <div class="gallery-card-content">
+        <time>${formatThaiDate(item.activityDate || item.createdAt)}</time>
+        <h3>${escapeHtml(item.title)}</h3>
+        ${item.caption ? `<p>${escapeHtml(item.caption)}</p>` : ""}
+      </div>
+    </article>`).join("");
+  $("#galleryEmpty").hidden = published.length > 0;
+}
+
+function renderPublicQuestions() {
+  const query = $("#questionSearch").value.trim().toLowerCase();
+  const visible = questionItems
+    .filter(item => item.status !== "ซ่อน")
+    .filter(item => !query || `${item.askerName} ${item.organization} ${item.question} ${item.answer}`.toLowerCase().includes(query))
+    .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+  $("#publicQuestionList").innerHTML = visible.map(item => `
+    <article class="qa-item">
+      <div class="qa-meta">
+        <span><b>${escapeHtml(item.askerName)}</b>${item.organization ? ` • ${escapeHtml(item.organization)}` : ""}</span>
+        <time>${formatThaiDate(item.createdAt)}</time>
+      </div>
+      <p class="qa-question">${escapeHtml(item.question)}</p>
+      ${item.answer
+        ? `<div class="qa-answer">${escapeHtml(item.answer)}</div>`
+        : '<div class="qa-answer pending">รอคำตอบจากผู้ดูแลชมรม</div>'}
+    </article>`).join("");
+  $("#questionCount").textContent = visible.length;
+  $("#questionEmpty").hidden = visible.length > 0;
+}
+
+async function submitQuestion(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const message = $("#questionMessage");
+  if (!form.checkValidity()) {
+    showFormMessage(message, "กรุณากรอกชื่อและคำถามให้ครบถ้วน", "error");
+    return;
+  }
+  const data = Object.fromEntries(new FormData(form).entries());
+  const button = form.querySelector('[type="submit"]');
+  button.disabled = true;
+  button.textContent = "กำลังส่งคำถาม...";
+  try {
+    if (GAS_API_URL) {
+      const result = await apiRequest("submitQuestion", data);
+      if (!result.success) throw new Error(result.message);
+    } else {
+      questionItems.unshift({
+        ...data,
+        questionId: `Q-${Date.now()}`,
+        answer: "",
+        status: "รอตอบ",
+        createdAt: new Date().toISOString()
+      });
+      saveLocalContent();
+    }
+    form.reset();
+    showFormMessage(message, "ส่งคำถามเรียบร้อยแล้ว ผู้ดูแลจะตอบกลับผ่านบอร์ดนี้", "success");
+    await loadPublicContent();
+  } catch (error) {
+    showFormMessage(message, error.message || "ส่งคำถามไม่สำเร็จ กรุณาลองใหม่", "error");
+  } finally {
+    button.disabled = false;
+    button.innerHTML = 'ส่งคำถาม <span aria-hidden="true">→</span>';
+  }
 }
 
 function saveLocalMembers() {
@@ -234,6 +348,12 @@ function setupAdmin() {
   $("#addMemberBtn").addEventListener("click", () => openMemberEditor());
   $("#memberEditForm").addEventListener("submit", saveMemberEdit);
   $("#adminMemberRows").addEventListener("click", handleAdminTableAction);
+  $("#activityImageFile").addEventListener("change", previewActivityImage);
+  $("#clearActivityImage").addEventListener("click", clearActivityImage);
+  $("#activityUploadForm").addEventListener("submit", uploadActivityImage);
+  $("#adminActivityList").addEventListener("click", handleActivityAction);
+  $("#adminQuestionList").addEventListener("submit", answerQuestion);
+  $("#adminQuestionList").addEventListener("click", handleQuestionAction);
 }
 
 async function adminLogin(event) {
@@ -261,9 +381,16 @@ async function adminLogin(event) {
 async function showDashboard() {
   try {
     if (GAS_API_URL) {
-      const result = await apiRequest("getAdminMembers", { token: adminToken });
-      if (!result.success) throw new Error(result.message || "เซสชันหมดอายุ");
-      allMembers = result.data;
+      const [memberResult, contentResult] = await Promise.all([
+        apiRequest("getAdminMembers", { token: adminToken }),
+        apiRequest("getAdminContent", { token: adminToken })
+      ]);
+      if (!memberResult.success || !contentResult.success) {
+        throw new Error(memberResult.message || contentResult.message || "เซสชันหมดอายุ");
+      }
+      allMembers = memberResult.data;
+      activityImages = contentResult.activities || [];
+      questionItems = contentResult.questions || [];
     }
     $("#adminLoginView").hidden = true;
     $("#adminDashboard").hidden = false;
@@ -293,6 +420,8 @@ function renderDashboard() {
   renderBarChart("#orgChart", countBy(allMembers, "organization"), null, 5);
   renderAttendanceChart();
   renderAdminTable();
+  renderAdminActivities();
+  renderAdminQuestions();
 }
 
 function countBy(items, key) {
@@ -432,6 +561,212 @@ async function deleteMember(memberId) {
   }
 }
 
+function previewActivityImage(event) {
+  const file = event.target.files[0];
+  const preview = $("#activityImagePreview");
+  if (!file) {
+    preview.hidden = true;
+    return;
+  }
+  if (file.size > 8 * 1024 * 1024) {
+    showFormMessage($("#activityUploadMessage"), "ไฟล์มีขนาดเกิน 8 MB กรุณาเลือกภาพใหม่", "error");
+    event.target.value = "";
+    return;
+  }
+  preview.querySelector("img").src = URL.createObjectURL(file);
+  preview.hidden = false;
+}
+
+function clearActivityImage() {
+  $("#activityImageFile").value = "";
+  $("#activityImagePreview").hidden = true;
+  $("#activityImagePreview img").removeAttribute("src");
+}
+
+async function uploadActivityImage(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const file = $("#activityImageFile").files[0];
+  const message = $("#activityUploadMessage");
+  if (!form.checkValidity() || !file) {
+    showFormMessage(message, "กรุณากรอกข้อมูลและเลือกภาพกิจกรรม", "error");
+    return;
+  }
+  const button = form.querySelector('[type="submit"]');
+  button.disabled = true;
+  button.textContent = "กำลังเตรียมและอัปโหลดภาพ...";
+  try {
+    const imageData = await compressImage(file, 1600, .84);
+    const data = Object.fromEntries(new FormData(form).entries());
+    delete data.image;
+    data.imageData = imageData;
+    data.fileName = file.name.replace(/[^\wก-๙.-]/g, "_");
+    data.mimeType = "image/jpeg";
+
+    if (GAS_API_URL) {
+      const result = await apiRequest("addActivity", { token: adminToken, activity: data });
+      if (!result.success) throw new Error(result.message);
+      await showDashboard();
+    } else {
+      activityImages.unshift({
+        ...data,
+        activityId: `ACT-${Date.now()}`,
+        imageUrl: imageData,
+        status: "เผยแพร่",
+        createdAt: new Date().toISOString()
+      });
+      saveLocalContent();
+      renderDashboard();
+    }
+    form.reset();
+    clearActivityImage();
+    renderActivityGallery();
+    showFormMessage(message, "อัปโหลดภาพกิจกรรมเรียบร้อยแล้ว", "success");
+  } catch (error) {
+    showFormMessage(message, error.message || "อัปโหลดภาพไม่สำเร็จ", "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "อัปโหลดภาพกิจกรรม";
+  }
+}
+
+function compressImage(file, maxSize, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("ไม่สามารถอ่านไฟล์ภาพได้"));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error("รูปแบบไฟล์ภาพไม่ถูกต้อง"));
+      image.onload = () => {
+        const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(image.width * scale);
+        canvas.height = Math.round(image.height * scale);
+        canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderAdminActivities() {
+  $("#adminActivityList").innerHTML = activityImages
+    .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))
+    .map(item => `
+      <article class="admin-activity-item">
+        <img src="${escapeHtml(item.imageUrl)}" alt="">
+        <div>
+          <h4>${escapeHtml(item.title)}</h4>
+          <p>${formatThaiDate(item.activityDate)} • ${escapeHtml(item.status || "เผยแพร่")}</p>
+        </div>
+        <button class="action-btn action-delete" type="button" data-delete-activity="${escapeHtml(item.activityId)}" title="ลบภาพ">×</button>
+      </article>`).join("") || '<div class="content-empty compact"><p>ยังไม่มีภาพกิจกรรม</p></div>';
+}
+
+function handleActivityAction(event) {
+  const button = event.target.closest("[data-delete-activity]");
+  if (button) deleteActivity(button.dataset.deleteActivity);
+}
+
+async function deleteActivity(activityId) {
+  if (!confirm("ยืนยันการลบภาพกิจกรรมนี้ใช่หรือไม่?")) return;
+  try {
+    if (GAS_API_URL) {
+      const result = await apiRequest("deleteActivity", { token: adminToken, activityId });
+      if (!result.success) throw new Error(result.message);
+      await showDashboard();
+    } else {
+      activityImages = activityImages.filter(item => item.activityId !== activityId);
+      saveLocalContent();
+      renderDashboard();
+    }
+    renderActivityGallery();
+    showToast("ลบภาพกิจกรรมเรียบร้อยแล้ว");
+  } catch (error) {
+    showToast(error.message || "ลบภาพไม่สำเร็จ");
+  }
+}
+
+function renderAdminQuestions() {
+  const sorted = [...questionItems].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+  $("#adminQuestionCount").textContent = sorted.length;
+  $("#adminQuestionList").innerHTML = sorted.map(item => `
+    <article class="admin-question-item">
+      <div class="admin-question-item-head">
+        <b>${escapeHtml(item.askerName)}${item.organization ? ` • ${escapeHtml(item.organization)}` : ""}</b>
+        <span>${formatThaiDate(item.createdAt)} • ${escapeHtml(item.status || "รอตอบ")}</span>
+      </div>
+      <p>${escapeHtml(item.question)}</p>
+      <form class="admin-answer-form" data-question-form="${escapeHtml(item.questionId)}">
+        <textarea name="answer" maxlength="2000" placeholder="พิมพ์คำตอบจากผู้ดูแล...">${escapeHtml(item.answer || "")}</textarea>
+        <div class="admin-answer-actions">
+          <button class="btn btn-small btn-danger-soft" type="button" data-delete-question="${escapeHtml(item.questionId)}">ลบ</button>
+          <button class="btn btn-small btn-primary" type="submit">บันทึกคำตอบ</button>
+        </div>
+      </form>
+    </article>`).join("") || '<div class="content-empty compact"><p>ยังไม่มีคำถาม</p></div>';
+}
+
+async function answerQuestion(event) {
+  const form = event.target.closest("[data-question-form]");
+  if (!form) return;
+  event.preventDefault();
+  const questionId = form.dataset.questionForm;
+  const answer = form.elements.answer.value.trim();
+  if (!answer) {
+    showToast("กรุณาพิมพ์คำตอบก่อนบันทึก");
+    return;
+  }
+  const button = form.querySelector('[type="submit"]');
+  button.disabled = true;
+  try {
+    if (GAS_API_URL) {
+      const result = await apiRequest("answerQuestion", { token: adminToken, questionId, answer });
+      if (!result.success) throw new Error(result.message);
+      await showDashboard();
+    } else {
+      const item = questionItems.find(question => question.questionId === questionId);
+      item.answer = answer;
+      item.status = "ตอบแล้ว";
+      item.answeredAt = new Date().toISOString();
+      saveLocalContent();
+      renderDashboard();
+    }
+    renderPublicQuestions();
+    showToast("บันทึกคำตอบเรียบร้อยแล้ว");
+  } catch (error) {
+    showToast(error.message || "บันทึกคำตอบไม่สำเร็จ");
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function handleQuestionAction(event) {
+  const button = event.target.closest("[data-delete-question]");
+  if (button) deleteQuestion(button.dataset.deleteQuestion);
+}
+
+async function deleteQuestion(questionId) {
+  if (!confirm("ยืนยันการลบคำถามนี้ใช่หรือไม่?")) return;
+  try {
+    if (GAS_API_URL) {
+      const result = await apiRequest("deleteQuestion", { token: adminToken, questionId });
+      if (!result.success) throw new Error(result.message);
+      await showDashboard();
+    } else {
+      questionItems = questionItems.filter(item => item.questionId !== questionId);
+      saveLocalContent();
+      renderDashboard();
+    }
+    renderPublicQuestions();
+    showToast("ลบคำถามเรียบร้อยแล้ว");
+  } catch (error) {
+    showToast(error.message || "ลบคำถามไม่สำเร็จ");
+  }
+}
+
 function exportCsv() {
   const headers = ["รหัสสมาชิก","คำนำหน้า","ชื่อ-สกุล","ตำแหน่ง","หน่วยงาน","สังกัด","โทรศัพท์","อีเมล","Line ID","ระดับทักษะ","การเข้าร่วม","สถานะ","วันที่สมัคร"];
   const keys = ["memberId","prefix","fullName","position","organization","affiliation","phone","email","lineId","skillLevel","attendance","status","createdAt"];
@@ -478,6 +813,17 @@ function showToast(text) {
   toast.classList.add("show");
   clearTimeout(showToast.timer);
   showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
+}
+
+function formatThaiDate(value) {
+  if (!value) return "ไม่ระบุวันที่";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return escapeHtml(value);
+  return new Intl.DateTimeFormat("th-TH", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  }).format(date);
 }
 
 function escapeHtml(value) {

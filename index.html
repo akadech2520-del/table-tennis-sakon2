@@ -42,6 +42,8 @@
         <a href="#home">หน้าแรก</a>
         <a href="#register">สมัครสมาชิก</a>
         <a href="#members">รายชื่อสมาชิก</a>
+        <a href="#gallery">ภาพกิจกรรม</a>
+        <a href="#qa-board">ถาม–ตอบ</a>
         <a href="#activity">ข้อมูลกิจกรรม</a>
         <a href="#contact">ติดต่อเรา</a>
         <button class="nav-admin" type="button" data-open-admin>ผู้ดูแลระบบ</button>
@@ -227,6 +229,55 @@
       </div>
     </section>
 
+    <section class="section gallery-section" id="gallery">
+      <div class="container">
+        <div class="section-heading reveal">
+          <span class="section-label">Activity gallery</span>
+          <h2>ภาพบรรยากาศกิจกรรม</h2>
+          <p>เก็บทุกความสนุก รอยยิ้ม และมิตรภาพจากกิจกรรมเทเบิลเทนนิสของพวกเรา</p>
+        </div>
+        <div class="activity-gallery" id="activityGallery"></div>
+        <div class="content-empty reveal" id="galleryEmpty">
+          <span>📷</span>
+          <h3>ยังไม่มีภาพกิจกรรม</h3>
+          <p>ผู้ดูแลระบบสามารถเพิ่มภาพได้จากหน้า Admin</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section qa-section" id="qa-board">
+      <div class="container qa-layout">
+        <div class="qa-intro reveal">
+          <span class="section-label light">Question & answer</span>
+          <h2>บอร์ดถาม–ตอบ</h2>
+          <p>มีข้อสงสัยเกี่ยวกับการสมัคร เวลาเล่น อุปกรณ์ หรือกิจกรรมของชมรม ส่งคำถามถึงผู้ดูแลได้ที่นี่</p>
+          <div class="qa-note">
+            <b>💬 คำถามของคุณมีประโยชน์กับทุกคน</b>
+            <span>คำถามและคำตอบจะแสดงบนหน้านี้ โดยไม่แสดงข้อมูลติดต่อส่วนตัว</span>
+          </div>
+          <form id="questionForm" class="question-form">
+            <div class="form-grid">
+              <label class="field"><span>ชื่อผู้ถาม <b>*</b></span><input name="askerName" required maxlength="100" placeholder="ชื่อหรือนามแฝง"></label>
+              <label class="field"><span>หน่วยงาน / โรงเรียน</span><input name="organization" maxlength="150" placeholder="ระบุหน่วยงาน (ถ้ามี)"></label>
+            </div>
+            <label class="field"><span>คำถาม <b>*</b></span><textarea name="question" required maxlength="1000" rows="4" placeholder="พิมพ์คำถามที่ต้องการสอบถาม"></textarea></label>
+            <div class="form-message" id="questionMessage" role="alert"></div>
+            <button class="btn btn-primary" type="submit">ส่งคำถาม <span aria-hidden="true">→</span></button>
+          </form>
+        </div>
+        <div class="qa-board reveal">
+          <div class="qa-board-head">
+            <div><span>คำถามล่าสุด</span><strong><b id="questionCount">0</b> คำถาม</strong></div>
+            <label class="qa-search"><span>⌕</span><input id="questionSearch" type="search" placeholder="ค้นหาคำถาม"></label>
+          </div>
+          <div class="qa-list" id="publicQuestionList"></div>
+          <div class="content-empty compact" id="questionEmpty">
+            <span>❓</span><p>ยังไม่มีคำถาม มาเริ่มถามเป็นคนแรกได้เลย</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="cta-section">
       <div class="container cta-inner reveal">
         <div><span>พร้อมขยับไปด้วยกันหรือยัง?</span><h2>ทุกแต้มคือพลัง ทุกครั้งที่เล่นคือมิตรภาพ</h2></div>
@@ -241,7 +292,7 @@
         <a class="brand" href="#top"><span class="brand-mark"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#fff"/><path d="M12 41h40v5H12z" fill="#0b42a1"/><path d="M31 41V29h2v12" fill="#d7a93d"/><path d="M13 40l12-11 8 5 9-10 10 16z" fill="#ec2d7b"/><circle cx="44" cy="17" r="5" fill="#fff" stroke="#d7a93d" stroke-width="2"/><path d="M19 17c7-5 15 4 10 11l-4 5-11-10z" fill="#0b42a1"/><path d="M25 30l7 8" stroke="#d7a93d" stroke-width="4" stroke-linecap="round"/></svg></span><span class="brand-text"><strong>ชมรมกีฬาเทเบิลเทนนิส</strong><small>สพป.สกลนคร เขต 2</small></span></a>
         <p>พื้นที่สร้างสุขภาพที่ดี มิตรภาพ และความสามัคคีของบุคลากรทางการศึกษา</p>
       </div>
-      <div><h3>เมนูลัด</h3><a href="#home">หน้าแรก</a><a href="#register">สมัครสมาชิก</a><a href="#members">รายชื่อสมาชิก</a><button type="button" data-open-admin>ผู้ดูแลระบบ</button></div>
+      <div><h3>เมนูลัด</h3><a href="#home">หน้าแรก</a><a href="#register">สมัครสมาชิก</a><a href="#members">รายชื่อสมาชิก</a><a href="#gallery">ภาพกิจกรรม</a><a href="#qa-board">ถาม–ตอบ</a><button type="button" data-open-admin>ผู้ดูแลระบบ</button></div>
       <div><h3>ข้อมูลกิจกรรม</h3><p>ทุกวันพฤหัสบดี</p><p>ณ หอประชุมรวมใจสามัคคี</p><p>ออกกำลังกาย • ฝึกทักษะ • สร้างมิตรภาพ</p></div>
       <div><h3>ติดต่อเรา</h3><p>สำนักงานเขตพื้นที่การศึกษาประถมศึกษาสกลนคร เขต 2</p><a href="https://www.sakon2.go.th" target="_blank" rel="noopener">www.sakon2.go.th ↗</a></div>
     </div>
@@ -275,7 +326,7 @@
           <div class="form-message" id="loginMessage" role="alert"></div>
           <button class="btn btn-submit" type="submit">เข้าสู่ระบบ</button>
         </form>
-        <small class="demo-hint">โหมดสาธิต: admin / pingpong2569</small>
+        <small class="demo-hint">บัญชีผู้ดูแลกำหนดจากฟังก์ชัน setupAdminAccount() ใน Google Apps Script</small>
       </div>
 
       <div id="adminDashboard" class="admin-dashboard" hidden>
@@ -304,6 +355,37 @@
           <div class="table-wrap admin-table-wrap">
             <table class="member-table admin-table"><thead><tr><th>รหัส</th><th>ชื่อ - สกุล</th><th>หน่วยงาน</th><th>ติดต่อ</th><th>ทักษะ</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody id="adminMemberRows"></tbody></table>
           </div>
+        </div>
+
+        <div class="admin-content-grid">
+          <section class="admin-table-section">
+            <div class="admin-table-head">
+              <div><h3>จัดการภาพกิจกรรม</h3><p>อัปโหลดภาพไปยัง Google Drive</p></div>
+            </div>
+            <form id="activityUploadForm" class="activity-upload-form">
+              <div class="form-grid">
+                <label class="field"><span>ชื่อกิจกรรม <b>*</b></span><input name="title" required maxlength="150" placeholder="เช่น กิจกรรมประจำวันพฤหัสบดี"></label>
+                <label class="field"><span>วันที่จัดกิจกรรม <b>*</b></span><input name="activityDate" type="date" required></label>
+              </div>
+              <label class="field"><span>คำบรรยายภาพ</span><textarea name="caption" rows="2" maxlength="500" placeholder="รายละเอียดหรือบรรยากาศในภาพ"></textarea></label>
+              <label class="image-upload-box">
+                <input id="activityImageFile" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>
+                <span>📷</span><b>เลือกภาพกิจกรรม</b><small>JPG, PNG หรือ WebP ขนาดไม่เกิน 8 MB</small>
+              </label>
+              <div class="upload-preview" id="activityImagePreview" hidden><img alt="ตัวอย่างภาพก่อนอัปโหลด"><button type="button" id="clearActivityImage">×</button></div>
+              <div class="form-message" id="activityUploadMessage" role="alert"></div>
+              <button class="btn btn-primary" type="submit">อัปโหลดภาพกิจกรรม</button>
+            </form>
+            <div class="admin-activity-list" id="adminActivityList"></div>
+          </section>
+
+          <section class="admin-table-section">
+            <div class="admin-table-head">
+              <div><h3>จัดการบอร์ดถาม–ตอบ</h3><p>ตอบคำถามหรือซ่อนคำถามที่ไม่เหมาะสม</p></div>
+              <span class="admin-count"><b id="adminQuestionCount">0</b> รายการ</span>
+            </div>
+            <div class="admin-question-list" id="adminQuestionList"></div>
+          </section>
         </div>
       </div>
     </div>
