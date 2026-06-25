@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ระบบสมาชิกชมรมกีฬาเทเบิลเทนนิส สพป.สกลนคร เขต 2">
+  <meta name="theme-color" content="#071a46">
+  <title>ชมรมกีฬาเทเบิลเทนนิส สพป.สกลนคร เขต 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">ข้ามไปยังเนื้อหา</a>
+
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="เมนูหลัก">
+      <a class="brand" href="#home" aria-label="กลับหน้าแรก">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="29" fill="#fff"/>
+            <path d="M12 41h40v5H12z" fill="#0b42a1"/>
+            <path d="M31 41V29h2v12" fill="#d7a93d"/>
+            <path d="M13 40l12-11 8 5 9-10 10 16z" fill="#ec2d7b" opacity=".92"/>
+            <circle cx="44" cy="17" r="5" fill="#fff" stroke="#d7a93d" stroke-width="2"/>
+            <path d="M19 17c7-5 15 4 10 11l-4 5-11-10z" fill="#0b42a1"/>
+            <path d="M25 30l7 8" stroke="#d7a93d" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <strong>ชมรมกีฬาเทเบิลเทนนิส</strong>
+          <small>สพป.สกลนคร เขต 2</small>
+        </span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="เปิดเมนู" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-links">
+        <a href="#home">หน้าแรก</a>
+        <a href="#register">สมัครสมาชิก</a>
+        <a href="#members">รายชื่อสมาชิก</a>
+        <a href="#gallery">ภาพกิจกรรม</a>
+        <a href="#qa-board">ถาม–ตอบ</a>
+        <button class="nav-admin" type="button" data-open-admin>ผู้ดูแลระบบ</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="home">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-orb orb-one" aria-hidden="true"></div>
+      <div class="hero-orb orb-two" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <div class="hero-copy reveal">
+          <span class="eyebrow"><i class="pulse-dot"></i> เปิดรับสมัครสมาชิกแล้ววันนี้</span>
+          <p class="hero-kicker">Sakon Nakhon Primary Educational Service Area Office 2</p>
+          <h1>ตีให้สนุก<br><span>สุขภาพแข็งแรง</span><small>มิตรภาพเกิดขึ้นได้ในทุกแต้ม</small></h1>
+          <p class="hero-subtitle">ชมรมกีฬาเทเบิลเทนนิส สพป.สกลนคร เขต 2</p>
+          <p class="hero-invite">ขอเชิญบุคลากรทางการศึกษาร่วมออกกำลังกาย ฝึกทักษะ และสร้างมิตรภาพไปด้วยกัน</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#register">สมัครสมาชิก <span>→</span></a>
+            <a class="btn btn-ghost" href="#activity">ดูกิจกรรมชมรม</a>
+          </div>
+          <div class="hero-meta">
+            <div><span class="meta-icon">◷</span><p><small>วันกิจกรรม</small><strong>ทุกวันพฤหัสบดี</strong></p></div>
+            <div><span class="meta-icon">⌖</span><p><small>สถานที่</small><strong>หอประชุมรวมใจสามัคคี</strong></p></div>
+          </div>
+        </div>
+
+        <div class="hero-art reveal" aria-label="ภาพประกอบกีฬาเทเบิลเทนนิส">
+          <div class="court-lines"></div>
+          <div class="paddle paddle-red"><i></i></div>
+          <div class="paddle paddle-blue"><i></i></div>
+          <div class="ping-ball"></div>
+          <div class="hero-badge"><b>PLAY</b><span>LEARN · SHARE · SMILE</span></div>
+        </div>
+      </div>
+      <a class="hero-scroll" href="#activity"><span>เลื่อนลง</span><i></i></a>
+    </section>
+
+    <section class="quick-stats" aria-label="ข้อมูลโดยสรุป">
+      <div class="container stat-strip">
+        <div><strong id="publicMemberCount">0</strong><span>สมาชิกที่อนุมัติแล้ว</span></div>
+        <div><strong>ทุกระดับ</strong><span>มือใหม่ถึงผู้มีประสบการณ์</span></div>
+        <div><strong>พฤหัสบดี</strong><span>พบกันเป็นประจำ</span></div>
+        <div><strong>ไม่มีค่าใช้จ่าย</strong><span>สมัครสมาชิกชมรม</span></div>
+      </div>
+    </section>
+
+    <section class="section activity-section" id="activity">
+      <div class="container">
+        <div class="section-heading reveal">
+          <span class="section-label">Club activities</span>
+          <h2>พื้นที่เล็ก ๆ ที่เต็มไปด้วยพลัง</h2>
+          <p>ไม่ว่าจะเพิ่งเริ่มจับไม้หรือเล่นมานาน ทุกคนร่วมสนุกและพัฒนาทักษะไปด้วยกันได้</p>
+        </div>
+
+        <div class="activity-grid">
+          <article class="info-card reveal"><span class="card-number">01</span><span class="card-icon blue">◉</span><h3>ออกกำลังกาย</h3><p>เพิ่มความคล่องตัว ความแข็งแรง และความสดชื่นหลังเลิกงาน</p></article>
+          <article class="info-card reveal"><span class="card-number">02</span><span class="card-icon pink">↗</span><h3>ฝึกทักษะ</h3><p>เรียนรู้การจับไม้ การเสิร์ฟ การตีโต้ และเทคนิคการแข่งขัน</p></article>
+          <article class="info-card reveal"><span class="card-number">03</span><span class="card-icon gold">♢</span><h3>สร้างมิตรภาพ</h3><p>พบปะเพื่อนร่วมวิชาชีพ แลกเปลี่ยนประสบการณ์อย่างเป็นกันเอง</p></article>
+          <article class="info-card reveal"><span class="card-number">04</span><span class="card-icon navy">★</span><h3>ร่วมกิจกรรม</h3><p>เตรียมพร้อมสำหรับกิจกรรมภายในและการแข่งขันในโอกาสต่าง ๆ</p></article>
+        </div>
+
+        <div class="goals-panel reveal">
+          <div class="goals-intro">
+            <span class="section-label light">Our goals</span>
+            <h2>เป้าหมายของชมรม</h2>
+            <p>กีฬาเป็นมากกว่าการแข่งขัน เราใช้ทุกการตีโต้เป็นพื้นที่สร้างสุขภาพและความสัมพันธ์ที่ดี</p>
+            <div class="ball-trail" aria-hidden="true"><i></i><i></i><i></i></div>
+          </div>
+          <div class="goal-list">
+            <article><b>01</b><span>♥</span><div><h3>ส่งเสริมสุขภาพ</h3><p>สร้างนิสัยการออกกำลังกายอย่างสม่ำเสมอ</p></div></article>
+            <article><b>02</b><span>⌁</span><div><h3>พัฒนาทักษะกีฬา</h3><p>ฝึกอย่างเหมาะสมตามระดับของสมาชิก</p></div></article>
+            <article><b>03</b><span>◎</span><div><h3>เชื่อมความสัมพันธ์</h3><p>สร้างเครือข่ายบุคลากรทางการศึกษาที่อบอุ่น</p></div></article>
+            <article><b>04</b><span>⚑</span><div><h3>สร้างตัวแทนองค์กร</h3><p>สนับสนุนสมาชิกที่พร้อมเข้าร่วมการแข่งขัน</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section register-section" id="register">
+      <div class="container register-layout">
+        <aside class="register-aside reveal">
+          <span class="section-label light">Join the club</span>
+          <h2>มาเป็นส่วนหนึ่งของทีมเรา</h2>
+          <p>กรอกข้อมูลเพียงไม่กี่นาที ผู้ดูแลจะตรวจสอบและอนุมัติรายชื่อสมาชิก</p>
+          <ul>
+            <li><span>✓</span> สมัครฟรี ไม่มีค่าธรรมเนียม</li>
+            <li><span>✓</span> รองรับผู้เล่นทุกระดับ</li>
+            <li><span>✓</span> ข้อมูลติดต่อไม่แสดงต่อสาธารณะ</li>
+          </ul>
+          <div class="mini-paddle" aria-hidden="true"><i></i><b></b></div>
+        </aside>
+
+        <form class="form-card reveal" id="registrationForm">
+          <div class="form-head">
+            <div><span>แบบฟอร์มออนไลน์</span><h2>สมัครสมาชิกชมรม</h2></div>
+            <span class="secure-badge">● ข้อมูลปลอดภัย</span>
+          </div>
+
+          <div class="form-section-title"><span>1</span><h3>ข้อมูลส่วนตัว</h3></div>
+          <div class="form-grid three">
+            <label class="field">
+              <span>คำนำหน้า <b>*</b></span>
+              <select name="prefix" required>
+                <option value="">เลือก</option><option>นาย</option><option>นาง</option><option>นางสาว</option><option>ดร.</option>
+              </select>
+            </label>
+            <label class="field span-2"><span>ชื่อ–สกุล <b>*</b></span><input name="fullName" required maxlength="120" autocomplete="name"></label>
+            <label class="field"><span>ตำแหน่ง <b>*</b></span><input name="position" required maxlength="100"></label>
+            <label class="field span-2"><span>โรงเรียน / หน่วยงาน <b>*</b></span><input name="organization" required maxlength="180"></label>
+            <label class="field span-3"><span>สังกัด</span><input name="affiliation" maxlength="180" value="สำนักงานเขตพื้นที่การศึกษาประถมศึกษาสกลนคร เขต 2"></label>
+          </div>
+
+          <div class="form-section-title"><span>2</span><h3>ข้อมูลติดต่อ</h3></div>
+          <div class="form-grid">
+            <label class="field"><span>โทรศัพท์ <b>*</b></span><input name="phone" required inputmode="tel" maxlength="15" autocomplete="tel" placeholder="08x-xxx-xxxx"></label>
+            <label class="field"><span>อีเมล</span><input name="email" type="email" maxlength="150" autocomplete="email"></label>
+            <label class="field span-2"><span>Line ID</span><input name="lineId" maxlength="100"></label>
+          </div>
+
+          <div class="form-section-title"><span>3</span><h3>ข้อมูลการเล่น</h3></div>
+          <fieldset class="choice-group">
+            <legend>ระดับทักษะ <b>*</b></legend>
+            <div class="choice-grid">
+              <label><input type="radio" name="skillLevel" value="เริ่มต้น" required><span><i>●</i><b>เริ่มต้น</b><small>ยังไม่เคยเล่น</small></span></label>
+              <label><input type="radio" name="skillLevel" value="เล่นได้"><span><i>●●</i><b>เล่นได้</b><small>ตีโต้พื้นฐาน</small></span></label>
+              <label><input type="radio" name="skillLevel" value="ปานกลาง"><span><i>●●●</i><b>ปานกลาง</b><small>เล่นเป็นประจำ</small></span></label>
+              <label><input type="radio" name="skillLevel" value="ชำนาญ"><span><i>●●●●</i><b>ชำนาญ</b><small>มีประสบการณ์แข่ง</small></span></label>
+            </div>
+          </fieldset>
+          <fieldset class="choice-group">
+            <legend>ความสะดวกในการเข้าร่วม <b>*</b></legend>
+            <div class="choice-grid two">
+              <label><input type="radio" name="attendance" value="เข้าร่วมประจำ" required><span><b>เข้าร่วมประจำ</b><small>สะดวกเกือบทุกสัปดาห์</small></span></label>
+              <label><input type="radio" name="attendance" value="เข้าร่วมเป็นครั้งคราว"><span><b>เป็นครั้งคราว</b><small>เข้าร่วมตามเวลาที่สะดวก</small></span></label>
+            </div>
+          </fieldset>
+          <label class="field"><span>หมายเหตุ</span><textarea name="note" rows="3" maxlength="500"></textarea></label>
+          <label class="consent"><input name="consent" type="checkbox" value="true" required><span>ข้าพเจ้ายินยอมให้ชมรมบันทึกข้อมูลเพื่อการบริหารสมาชิก และรับทราบว่าจะเผยแพร่เฉพาะชื่อ หน่วยงาน ระดับทักษะ และสถานะสมาชิกเท่านั้น <b>*</b></span></label>
+          <div class="form-message" id="registrationMessage" role="alert"></div>
+          <button class="btn btn-submit" type="submit">ส่งใบสมัครสมาชิก <span>→</span></button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section members-section" id="members">
+      <div class="container">
+        <div class="section-heading left reveal">
+          <span class="section-label">Club members</span>
+          <h2>รายชื่อสมาชิกชมรม</h2>
+          <p>แสดงเฉพาะสมาชิกที่ผ่านการอนุมัติแล้ว โดยซ่อนข้อมูลติดต่อส่วนตัว</p>
+        </div>
+        <div class="members-toolbar reveal">
+          <label class="search-box"><span>⌕</span><input id="memberSearch" type="search" placeholder="ค้นหาชื่อ โรงเรียน หรือหน่วยงาน"></label>
+          <select id="skillFilter" aria-label="กรองตามระดับทักษะ">
+            <option value="">ทุกระดับทักษะ</option><option>เริ่มต้น</option><option>เล่นได้</option><option>ปานกลาง</option><option>ชำนาญ</option>
+          </select>
+          <span class="member-result">พบ <b id="memberResultCount">0</b> คน</span>
+        </div>
+        <div class="table-wrap reveal">
+          <table class="member-table">
+            <thead><tr><th>รหัส</th><th>ชื่อ–สกุล</th><th>ตำแหน่ง</th><th>หน่วยงาน</th><th>ทักษะ</th><th>สถานะ</th></tr></thead>
+            <tbody id="publicMemberRows"></tbody>
+          </table>
+          <div class="empty-state" id="memberEmpty" hidden><span>⌕</span><p>ไม่พบสมาชิกตามเงื่อนไขที่ค้นหา</p></div>
+        </div>
+        <p class="privacy-note">🔒 ระบบไม่แสดงหมายเลขโทรศัพท์ อีเมล และ Line ID ต่อสาธารณะ</p>
+      </div>
+    </section>
+
+    <section class="section gallery-section" id="gallery">
+      <div class="container">
+        <div class="section-heading reveal">
+          <span class="section-label">Activity gallery</span>
+          <h2>ภาพบรรยากาศกิจกรรม</h2>
+          <p>เก็บทุกความสนุก รอยยิ้ม และมิตรภาพจากกิจกรรมเทเบิลเทนนิสของพวกเรา</p>
+        </div>
+        <div class="activity-gallery" id="activityGallery"></div>
+        <div class="content-empty reveal" id="galleryEmpty">
+          <span>▧</span><h3>ยังไม่มีภาพกิจกรรม</h3><p>ผู้ดูแลระบบสามารถเพิ่มภาพได้จากหน้า Admin</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section qa-section" id="qa-board">
+      <div class="container qa-layout">
+        <div class="qa-intro reveal">
+          <span class="section-label light">Question & answer</span>
+          <h2>บอร์ดถาม–ตอบ</h2>
+          <p>มีข้อสงสัยเกี่ยวกับการสมัคร เวลาเล่น อุปกรณ์ หรือกิจกรรม ส่งคำถามถึงผู้ดูแลได้ที่นี่</p>
+          <div class="qa-note"><b>💬 คำถามของคุณมีประโยชน์กับทุกคน</b><span>คำถามและคำตอบจะแสดงบนหน้านี้ โดยไม่แสดงข้อมูลติดต่อส่วนตัว</span></div>
+          <form id="questionForm" class="question-form">
+            <div class="form-grid">
+              <label class="field"><span>ชื่อผู้ถาม <b>*</b></span><input name="askerName" required maxlength="100" placeholder="ชื่อหรือนามแฝง"></label>
+              <label class="field"><span>หน่วยงาน / โรงเรียน</span><input name="organization" maxlength="150"></label>
+            </div>
+            <label class="field"><span>คำถาม <b>*</b></span><textarea name="question" required maxlength="1000" rows="4"></textarea></label>
+            <div class="form-message" id="questionMessage" role="alert"></div>
+            <button class="btn btn-primary" type="submit">ส่งคำถาม <span>→</span></button>
+          </form>
+        </div>
+        <div class="qa-board reveal">
+          <div class="qa-board-head">
+            <div><span>คำถามล่าสุด</span><strong><b id="questionCount">0</b> คำถาม</strong></div>
+            <label class="qa-search"><span>⌕</span><input id="questionSearch" type="search" placeholder="ค้นหาคำถาม"></label>
+          </div>
+          <div class="qa-list" id="publicQuestionList"></div>
+          <div class="content-empty compact" id="questionEmpty"><span>?</span><p>ยังไม่มีคำถาม มาเริ่มถามเป็นคนแรกได้เลย</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container cta-inner reveal">
+        <div><span>พร้อมขยับไปด้วยกันหรือยัง?</span><h2>ทุกแต้มคือพลัง ทุกครั้งที่เล่นคือมิตรภาพ</h2></div>
+        <a class="btn btn-ghost" href="#register">สมัครสมาชิกวันนี้</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="#top"><span class="brand-mark"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#fff"/><path d="M12 41h40v5H12z" fill="#0b42a1"/><path d="M13 40l12-11 8 5 9-10 10 16z" fill="#ec2d7b"/></svg></span><span class="brand-text"><strong>ชมรมกีฬาเทเบิลเทนนิส</strong><small>สพป.สกลนคร เขต 2</small></span></a>
+        <p>พื้นที่สร้างสุขภาพที่ดี มิตรภาพ และความสามัคคีของบุคลากรทางการศึกษา</p>
+      </div>
+      <div><h3>เมนูลัด</h3><a href="#register">สมัครสมาชิก</a><a href="#members">รายชื่อสมาชิก</a><a href="#gallery">ภาพกิจกรรม</a><a href="#qa-board">ถาม–ตอบ</a><button type="button" data-open-admin>ผู้ดูแลระบบ</button></div>
+      <div><h3>ข้อมูลกิจกรรม</h3><p>ทุกวันพฤหัสบดี</p><p>ณ หอประชุมรวมใจสามัคคี</p><p>ออกกำลังกาย · ฝึกทักษะ · สร้างมิตรภาพ</p></div>
+      <div><h3>ติดต่อเรา</h3><p>สำนักงานเขตพื้นที่การศึกษาประถมศึกษาสกลนคร เขต 2</p><a href="https://www.sakon2.go.th" target="_blank" rel="noopener">www.sakon2.go.th ↗</a></div>
+    </div>
+    <div class="footer-bottom"><div class="container">© <span id="currentYear"></span> ชมรมกีฬาเทเบิลเทนนิส สพป.สกลนคร เขต 2</div></div>
+  </footer>
+
+  <div class="modal" id="successModal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="success-dialog" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <button class="modal-close" type="button" data-close-modal aria-label="ปิด">×</button>
+      <span class="success-icon">✓</span>
+      <h2 id="successTitle">สมัครสมาชิกเรียบร้อย</h2>
+      <p>รหัสสมาชิกของคุณคือ</p><strong id="newMemberId">TT-0000</strong>
+      <small>รายชื่อจะแสดงบนเว็บไซต์หลังผู้ดูแลอนุมัติ</small>
+      <button class="btn btn-primary" type="button" data-close-modal>ตกลง</button>
+    </div>
+  </div>
+
+  <div class="modal admin-modal" id="adminModal" hidden>
+    <div class="modal-backdrop" data-close-admin></div>
+    <div class="admin-shell" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+      <button class="modal-close" type="button" data-close-admin aria-label="ปิด">×</button>
+
+      <div class="admin-login" id="adminLoginView">
+        <span class="admin-lock">◆</span><h2 id="adminTitle">เข้าสู่ระบบผู้ดูแล</h2><p>จัดการสมาชิก ภาพกิจกรรม และคำถามจากผู้ใช้งาน</p>
+        <form id="adminLoginForm">
+          <label class="field"><span>ชื่อผู้ใช้</span><input name="username" required autocomplete="username"></label>
+          <label class="field"><span>รหัสผ่าน</span><input name="password" type="password" required autocomplete="current-password"></label>
+          <div class="form-message" id="loginMessage" role="alert"></div>
+          <button class="btn btn-submit" type="submit">เข้าสู่ระบบ</button>
+        </form>
+        <small class="demo-hint">โหมดสาธิต: admin / pingpong2569</small>
+      </div>
+
+      <div class="admin-dashboard" id="adminDashboard" hidden>
+        <div class="dashboard-head">
+          <div><span>ADMIN DASHBOARD</span><h2>จัดการระบบสมาชิกชมรม</h2></div>
+          <div class="dashboard-actions">
+            <button class="btn btn-small btn-soft" id="exportCsvBtn" type="button">ส่งออก CSV</button>
+            <button class="btn btn-small btn-soft" id="addMemberBtn" type="button">+ เพิ่มสมาชิก</button>
+            <button class="btn btn-small btn-danger-soft" id="adminLogoutBtn" type="button">ออกจากระบบ</button>
+          </div>
+        </div>
+
+        <div class="dashboard-cards">
+          <article><span>สมาชิกทั้งหมด</span><strong id="adminTotalCount">0</strong></article>
+          <article><span>อนุมัติแล้ว</span><strong id="adminApprovedCount">0</strong></article>
+          <article><span>รออนุมัติ</span><strong id="adminPendingCount">0</strong></article>
+          <article><span>ภาพกิจกรรม</span><strong id="adminActivityCount">0</strong></article>
+        </div>
+
+        <section class="admin-table-section">
+          <div class="admin-table-head">
+            <h3>จัดการสมาชิก</h3>
+            <div class="admin-filters">
+              <input id="adminSearch" type="search" placeholder="ค้นหาสมาชิก">
+              <select id="adminStatusFilter"><option value="">ทุกสถานะ</option><option>รออนุมัติ</option><option>อนุมัติแล้ว</option><option>ยกเลิก</option></select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="member-table admin-table"><thead><tr><th>รหัส</th><th>ชื่อ–สกุล</th><th>หน่วยงาน</th><th>ติดต่อ</th><th>ทักษะ</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody id="adminMemberRows"></tbody></table>
+          </div>
+        </section>
+
+        <div class="admin-content-grid">
+          <section class="admin-table-section">
+            <div class="admin-table-head"><div><h3>จัดการภาพกิจกรรม</h3><p>อัปโหลดภาพไปยัง Google Drive</p></div></div>
+            <form id="activityUploadForm" class="activity-upload-form">
+              <div class="form-grid">
+                <label class="field"><span>ชื่อกิจกรรม <b>*</b></span><input name="title" required maxlength="150"></label>
+                <label class="field"><span>วันที่จัดกิจกรรม <b>*</b></span><input name="activityDate" type="date" required></label>
+              </div>
+              <label class="field"><span>คำบรรยายภาพ</span><textarea name="caption" rows="2" maxlength="500"></textarea></label>
+              <label class="image-upload-box">
+                <input id="activityImageFile" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>
+                <span>▧</span><b>เลือกภาพกิจกรรม</b><small>JPG, PNG หรือ WebP ขนาดไม่เกิน 8 MB</small>
+              </label>
+              <div class="upload-preview" id="activityImagePreview" hidden><img alt="ตัวอย่างภาพก่อนอัปโหลด"><button type="button" id="clearActivityImage">×</button></div>
+              <div class="form-message" id="activityUploadMessage" role="alert"></div>
+              <button class="btn btn-primary" type="submit">อัปโหลดภาพกิจกรรม</button>
+            </form>
+            <div class="admin-activity-list" id="adminActivityList"></div>
+          </section>
+
+          <section class="admin-table-section">
+            <div class="admin-table-head"><div><h3>จัดการบอร์ดถาม–ตอบ</h3><p>ตอบหรือลบคำถามจากผู้ใช้งาน</p></div><span class="admin-count"><b id="adminQuestionCount">0</b> รายการ</span></div>
+            <div class="admin-question-list" id="adminQuestionList"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="memberEditorModal" hidden>
+    <div class="modal-backdrop" data-close-editor></div>
+    <div class="edit-dialog" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+      <button class="modal-close" type="button" data-close-editor aria-label="ปิด">×</button>
+      <h2 id="editorTitle">แก้ไขข้อมูลสมาชิก</h2>
+      <form id="memberEditForm">
+        <input name="memberId" type="hidden">
+        <div class="form-grid three">
+          <label class="field"><span>คำนำหน้า <b>*</b></span><select name="prefix" required><option>นาย</option><option>นาง</option><option>นางสาว</option><option>ดร.</option></select></label>
+          <label class="field span-2"><span>ชื่อ–สกุล <b>*</b></span><input name="fullName" required></label>
+          <label class="field"><span>ตำแหน่ง <b>*</b></span><input name="position" required></label>
+          <label class="field span-2"><span>หน่วยงาน <b>*</b></span><input name="organization" required></label>
+          <label class="field span-3"><span>สังกัด</span><input name="affiliation"></label>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>โทรศัพท์ <b>*</b></span><input name="phone" required></label>
+          <label class="field"><span>อีเมล</span><input name="email" type="email"></label>
+          <label class="field"><span>Line ID</span><input name="lineId"></label>
+          <label class="field"><span>ระดับทักษะ <b>*</b></span><select name="skillLevel" required><option>เริ่มต้น</option><option>เล่นได้</option><option>ปานกลาง</option><option>ชำนาญ</option></select></label>
+          <label class="field"><span>การเข้าร่วม</span><select name="attendance"><option>เข้าร่วมประจำ</option><option>เข้าร่วมเป็นครั้งคราว</option></select></label>
+          <label class="field"><span>สถานะ</span><select name="status"><option>รออนุมัติ</option><option>อนุมัติแล้ว</option><option>ยกเลิก</option></select></label>
+          <label class="field span-2"><span>หมายเหตุ</span><textarea name="note" rows="2"></textarea></label>
+        </div>
+        <div class="form-message" id="editorMessage" role="alert"></div>
+        <button class="btn btn-submit" type="submit">บันทึกข้อมูล</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
